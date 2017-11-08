@@ -1,0 +1,46 @@
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var userList = [];
+var socketId = null;
+var selectedUser = null;
+var messages = [];
+var message = "مرحبا";
+
+
+var socket = io.connect('http://localhost:3000');
+
+socket.emit('username', "c2");
+username = "c2";
+socket.on('userList', (userList, socketId) => {
+    if (socketId === null) {
+        socketId = socketId;
+    }
+    userList = userList;
+    console.log(userList)
+});
+// send msg to server to send to user
+var getMsg = function () {
+socket.emit('getMsg', {
+    toid: selectedUser,
+    msg: message,
+    name: username
+});
+}
+
+
+
+//when user exit from socket update userlist
+
+socket.on('exit', (userList) => {
+    userList = userList;
+    console.log(userList)
+});
+
+
+//resive msg from server
+socket.on('sendMsg', (data) => {
+    messages.push(data);
+    console.log(messages)
+});
+</script>
